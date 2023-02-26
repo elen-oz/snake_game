@@ -2,6 +2,7 @@ let canvas = document.getElementById('game');
 let context = canvas.getContext('2d');
 let grid = 16;
 let count = 0;
+
 const snake = {
   x: 160,
   y: 160,
@@ -22,25 +23,25 @@ function getRandomInt(min, max) {
 
 function loop() {
   requestAnimationFrame(loop);
-  if (count + 1 < 4) {
+
+  if (++count < 4) {
     return;
   }
 
   count = 0;
-  context.clearReact(0, 0, canvas.width, canvas.height);
-
+  context.clearRect(0, 0, canvas.width, canvas.height);
   snake.x += snake.dx;
   snake.y += snake.dy;
 
   if (snake.x < 0) {
     snake.x = canvas.width - grid;
-  } else if (snake.x >= caches.width) {
+  } else if (snake.x >= canvas.width) {
     snake.x = 0;
   }
 
   if (snake.y < 0) {
     snake.y = canvas.height - grid;
-  } else if (snake.y >= caches.height) {
+  } else if (snake.y >= canvas.height) {
     snake.y = 0;
   }
 
@@ -50,13 +51,12 @@ function loop() {
     snake.cells.pop();
   }
 
-  // apple
-  context.fillStyle = 'red';
-  context.fillReact(apple.x, apple.y, grid - 1, grid - 1);
-  context.fillStyle = 'green';
+  context.fillStyle = 'Coral';
+  context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
+  context.fillStyle = 'DodgerBlue';
 
   snake.cells.forEach(function (cell, index) {
-    context.fillReact(cell.x, cell.y, grid - 1, grid - 1);
+    context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
     if (cell.x === apple.x && cell.y === apple.y) {
       snake.maxCells++;
       apple.x = getRandomInt(0, 25) * grid;
@@ -78,3 +78,20 @@ function loop() {
     }
   });
 }
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'ArrowLeft' && snake.dx === 0) {
+    snake.dx = -grid;
+    snake.dy = 0;
+  } else if (e.key === 'ArrowUp' && snake.dy === 0) {
+    snake.dy = -grid;
+    snake.dx = 0;
+  } else if (e.key === 'ArrowRight' && snake.dx === 0) {
+    snake.dx = grid;
+    snake.dy = 0;
+  } else if (e.key === 'ArrowDown' && snake.dy === 0) {
+    snake.dy = grid;
+    snake.dx = 0;
+  }
+});
+
+requestAnimationFrame(loop);
