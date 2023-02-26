@@ -1,9 +1,9 @@
-let canvas = document.getElementById('game');
-let context = canvas.getContext('2d');
-let grid = 16;
-let count = 0;
+var canvas = document.getElementById('game');
+var context = canvas.getContext('2d');
+var grid = 16;
+var count = 0;
 
-const snake = {
+var snake = {
   x: 160,
   y: 160,
   dx: grid,
@@ -12,13 +12,13 @@ const snake = {
   maxCells: 4,
 };
 
-let apple = {
+var apple = {
   x: 320,
   y: 320,
 };
 
 function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (min - max)) + min;
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function loop() {
@@ -57,13 +57,14 @@ function loop() {
 
   snake.cells.forEach(function (cell, index) {
     context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
+
     if (cell.x === apple.x && cell.y === apple.y) {
       snake.maxCells++;
       apple.x = getRandomInt(0, 25) * grid;
       apple.y = getRandomInt(0, 25) * grid;
     }
 
-    for (let i = index + 1; i < snake.cells.length; i++) {
+    for (var i = index + 1; i < snake.cells.length; i++) {
       if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
         snake.x = 160;
         snake.y = 160;
